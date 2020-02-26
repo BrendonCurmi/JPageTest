@@ -18,6 +18,8 @@ jobs:
           java-version: 1.8
       - name: Maven Test
         run: mvn test
+        env:
+          WPT_API_KEY: ${{ secrets.WPT_API_KEY }}
     
   package:
     name: Publish - GitHub Packages
