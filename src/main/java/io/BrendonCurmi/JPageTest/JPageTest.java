@@ -4,8 +4,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -181,6 +179,7 @@ public class JPageTest {
      * @throws Exception            if data cannot be retrieved.
      */
     public List<Data> runSingleTest(int runs, String pageURL) throws Exception {
+        if (runs < 1) return new ArrayList<>();
         JSONObject testPayload = request(runs, pageURL);
         return parse(testPayload);
     }
@@ -201,13 +200,16 @@ public class JPageTest {
      */
     public List<Data[]> runComparativeTest(int runs, String page1URL, String page2URL) throws Exception {
         List<Data[]> results = new ArrayList<>();
+        if (runs < 1) return results;
         JSONObject[] payloads = new JSONObject[]{request(runs, page1URL), request(runs, page2URL)};
         List<Data> page1Data = parse(payloads[0]), page2Data = parse(payloads[1]);
-        for (int i = 0; i < runs; i++) {
-            Data data1 = page1Data.get(i);
-            Data data2 = page2Data.get(i);
-            results.add(new Data[]{data1, data2});
-        }
+
+        // If the runs and result sizes don't match, fix value of runs to not overflow.
+        // Usually happens if runs exceeds the runs per call limit of public (free) provisions.
+        if (page1Data.size() == page2Data.size() && runs > page1Data.size()) runs = page1Data.size();
+        else runs = Math.min(page1Data.size(), page2Data.size());
+
+        for (int i = 0; i < runs; i++) results.add(new Data[]{page1Data.get(i), page2Data.get(i)});
         return results;
     }
 
