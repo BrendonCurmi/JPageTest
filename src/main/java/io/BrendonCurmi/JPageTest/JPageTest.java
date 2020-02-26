@@ -25,9 +25,9 @@ import java.util.Objects;
  *     JPageTest jPageTest = new JPageTest("[API KEY]");
  * </code></pre>
  * <p>To run a web performance test on a single webpage, you can use the thread-blocking {@link #runSingleTest(int, String)}</p>
- * <p>For example to run 10 tests on www.example.com, you can use:</p>
+ * <p>For example to run 5 tests on www.example.com, you can use:</p>
  * <pre><code>
- *     jPageTest.runSingleTest(10, "https://www.example.com");
+ *     jPageTest.runSingleTest(5, "https://www.example.com");
  * </code></pre>
  * <p>To run a web performance test on two webpages, you can use the thread-blocking {@link #runComparativeTest(int, String, String)}</p>
  * <p>For example to run 5 tests each for www.example1.com and www.example2.com (total 10 tests), you can use:</p>
